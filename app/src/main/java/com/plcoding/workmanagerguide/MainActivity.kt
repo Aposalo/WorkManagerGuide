@@ -1,30 +1,37 @@
 package com.plcoding.workmanagerguide
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import coil.compose.rememberImagePainter
 import com.plcoding.workmanagerguide.ui.theme.WorkManagerGuideTheme
-import java.time.Duration
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnrememberedMutableState")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val downloadRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
@@ -97,6 +104,7 @@ class MainActivity : ComponentActivity() {
                         WorkInfo.State.CANCELLED -> Text("Download cancelled")
                         WorkInfo.State.ENQUEUED -> Text("Download enqueued")
                         WorkInfo.State.BLOCKED -> Text("Download blocked")
+                        else -> {}
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     when(filterInfo?.state) {
@@ -106,6 +114,7 @@ class MainActivity : ComponentActivity() {
                         WorkInfo.State.CANCELLED -> Text("Filter cancelled")
                         WorkInfo.State.ENQUEUED -> Text("Filter enqueued")
                         WorkInfo.State.BLOCKED -> Text("Filter blocked")
+                        else -> {}
                     }
                 }
             }
